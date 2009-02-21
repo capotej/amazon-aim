@@ -3,7 +3,7 @@
 This is a minimal implementaiton of the Amazon Inventory Management API. For now it supports orders, listings, and reports.
 
 ## Installation
-Add this library directory to your load_path, and require amazon_aim
+Add this library directory to your project's load_path, and require amazon_aim
 
 (gem coming soon)
 
