@@ -8,7 +8,7 @@ module AmazonAIM
       @password = password
     end
     
-    def request(u, x = nil, y = nil)
+    def request(u, x = nil, y = nil, data = nil)
       url = URI.parse(u)
       req = Net::HTTP::Post.new(url.path)
       http = Net::HTTP.new(url.host, url.port)
@@ -17,15 +17,17 @@ module AmazonAIM
       if x != nil
         req.add_field x, y
       end
+      if data != nil
+        req.body = data
+        req.content_type = "text/xml"
+      end
+
       res = http.request(req)
     end
     
     
-    def get_latest_orders
-      r = get_reports('Order').sort_by { |x| x.id }
-      res = get_report(r.last.id)
-      o = Orders.new(res.body)
-      o.parse
+    def get_latest_reports
+      r = get_reports('Order')
     end
     
     def get_latest_listings
@@ -53,6 +55,13 @@ module AmazonAIM
       r.parse
     end
     
+    def upload_inventory(data)
+      res = self.request("https://secure.amazon.com/exec/panama/seller-admin/catalog-upload/add-modify-delete", "FileFormat", "TabDelimited", data)
+      puts res.body
+    end
+
+
+
   end
 
 end
